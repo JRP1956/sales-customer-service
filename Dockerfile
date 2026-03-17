@@ -7,12 +7,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Python dependencies
-COPY pyproject.toml requirements.txt* ./
-RUN pip install --no-cache-dir -e ".[dev]" 2>/dev/null || pip install --no-cache-dir -e .
-
-# Copy application code
+# Copy ALL code first, then install
 COPY . .
+RUN pip install --no-cache-dir .
 
 # Run the server
 EXPOSE 8000
